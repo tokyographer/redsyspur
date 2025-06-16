@@ -5,6 +5,8 @@
 [![Compatible con WooCommerce 8.5+](https://img.shields.io/badge/WooCommerce-8.5%2B-purple.svg)](https://woocommerce.com/)
 
 > ⚠️ **IMPORTANTE**: Este es un parche de compatibilidad no oficial para el plugin oficial de Redsys para WooCommerce. Su único propósito es proporcionar una solución temporal a problemas de compatibilidad con versiones recientes de PHP y WordPress.
+>
+> 📌 Para la documentación oficial y soporte, visita el [Portal de Desarrolladores de Redsys](https://pagosonline.redsys.es/desarrolladores-inicio/documentacion-tipos-de-integracion/modulos-pago/)
 
 ## 🎯 Propósito
 
@@ -69,6 +71,11 @@ Este repositorio contiene correcciones de compatibilidad para el plugin oficial 
   ini_set('display_errors', 0);
   ini_set('log_errors', 1);
   ```
+
+## 📚 Recursos Oficiales
+
+- [Documentación Oficial para Desarrolladores](https://pagosonline.redsys.es/desarrolladores-inicio/documentacion-tipos-de-integracion/modulos-pago/) - Portal oficial de Redsys con documentación técnica y guías de integración
+- Para soporte oficial y últimas versiones, visita el portal de desarrolladores de Redsys
 
 ## ⚖️ Aviso Legal
 
