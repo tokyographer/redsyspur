@@ -65,17 +65,23 @@ Este error ha sido corregido en la versión 1.7.2 moviendo la carga de traduccio
 
 ### Versión 1.7.2
 
+#### Mejoras de Compatibilidad
 - Declaración explícita de propiedades en clases principales:
   - WC_Redsys
   - WC_Redsys_Bizum
   - WC_Redsys_Insite
 
-- Optimización de carga de traducciones:
+#### Optimizaciones de Rendimiento
+- Mejora en la carga de traducciones:
   ```php
-  add_action('init', function() {
-      load_plugin_textdomain("redsys", false, dirname(plugin_basename(__FILE__)));
-  }, 11);
+  function redsys_load_textdomain() {
+      load_plugin_textdomain("redsys", false, dirname(plugin_basename(__FILE__)) . '/languages');
+  }
+  add_action('after_setup_theme', 'redsys_load_textdomain', 20);
   ```
+  - Resuelve el error "Translation loading triggered too early"
+  - Mejora la compatibilidad con WordPress 6.7+
+  - Optimiza el orden de carga de recursos
 
 - Mejora en el manejo de errores:
   ```php
@@ -83,6 +89,31 @@ Este error ha sido corregido en la versión 1.7.2 moviendo la carga de traduccio
   ini_set('display_errors', 0);
   ini_set('log_errors', 1);
   ```
+
+## 📅 Changelog Detallado
+
+### Versión 1.7.2 (16 Junio 2025)
+
+#### 🔧 Correcciones
+1. **Solución Error de Traducciones**
+   - Resuelto: "Translation loading triggered too early"
+   - Implementado nuevo sistema de carga de traducciones
+   - Mejorada compatibilidad con WordPress 6.7+
+
+2. **Compatibilidad PHP 8.3+**
+   - Eliminadas advertencias de propiedades dinámicas
+   - Actualizada estructura de clases
+   - Optimizado código base
+
+3. **Gestión de Errores**
+   - Mejorado sistema de logging
+   - Implementado control de visualización de errores
+   - Añadido soporte para depuración avanzada
+
+#### 🆕 Mejoras
+- Optimización general del rendimiento
+- Mejor integración con WooCommerce
+- Documentación técnica actualizada
 
 ## 📚 Recursos Oficiales
 
