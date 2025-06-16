@@ -39,7 +39,5 @@ function php_compat_hash_hmac($algo, $data, $key, $raw_output = false)
 if (!function_exists('hash_hmac4')) {
     function hash_hmac4($algo, $data, $key, $raw_output = false)
     {
-        return php_compat_hash_hmac($algo, $data, $key, $raw_output);
-    }
+        return php_compat_hash_hmac($algo, $data, $key, $raw_output);    }
 }
-?>

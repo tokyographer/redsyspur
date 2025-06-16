@@ -28,6 +28,38 @@ require_once('wc-redsys-ref.php');
 require_once('wc-redsys-refund.php');
 
 class WC_Redsys extends WC_Payment_Gateway {
+    // Propiedades de configuración
+    public $entorno;
+    public $nombre;
+    public $fuc;
+    public $tipopago;
+    public $clave256;
+    public $terminal;
+    public $genPedido;
+    public $pedidoExtendido;
+    public $activar_log;
+    public $estado;
+    public $activar_3ds;
+    public $mantener_carrito;
+    public $activar_anulaciones;
+    public $withref;
+    public $tabla_ordenes;
+    public $moneda_manual;
+    public $decimales_moneda;
+    public $modal;
+    public $notificacion_get;
+    public $urlOK;
+    public $urlKO;
+
+    // Propiedades de operativa
+    public $moneda;
+    public $moduleComent;
+    public $logString;
+    public $buttonLabel;
+    public $notify_url;
+    public $payment_fields_url;
+    public $redirect_options_url;
+    public $redirect_url;
 
     public function __construct() {
         $this->id                 = 'redsys';  

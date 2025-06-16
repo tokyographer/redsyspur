@@ -49,7 +49,5 @@ function php_compat_hash($algo, $data, $raw_output = false)
 if (!function_exists('hash')) {
     function hash($algo, $data, $raw_output = false)
     {
-        return php_compat_hash($algo, $data, $raw_output);
-    }
+        return php_compat_hash($algo, $data, $raw_output);    }
 }
-?>

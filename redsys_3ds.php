@@ -326,5 +326,3 @@ $Ds_Merchant_EMV3DS = quitarNulos($Ds_Merchant_EMV3DS);
 $Ds_Merchant_EMV3DS = json_encode($Ds_Merchant_EMV3DS);
 
 $miObj->setParameter("Ds_Merchant_EMV3DS", $Ds_Merchant_EMV3DS);
-
-?>

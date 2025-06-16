@@ -33,6 +33,33 @@ if(!class_exists("WC_Redsys_Refund")) {
 }
 
 class WC_Redsys_Bizum extends WC_Payment_Gateway {
+    // Propiedades de configuración
+    public $entorno;
+    public $nombre;
+    public $fuc;
+    public $tipopago;
+    public $clave256;
+    public $terminal;
+    public $activar_log;
+    public $notificacion_get;
+    public $estado;
+    public $genPedido;
+    public $pedidoExtendido;
+    public $mantener_carrito;
+    public $activar_anulaciones;
+    public $moneda_manual;
+    public $decimales_moneda;
+    public $urlok;
+    public $urlko;
+
+    // Propiedades de operativa
+    public $moneda;
+    public $moduleComent;
+    public $logString;
+    public $buttonLabel;
+    public $notify_url;
+    public $redirect_url;
+    public $log;
 
     public function __construct() {
         $this->id                 = 'redsys_bizum';

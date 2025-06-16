@@ -41,7 +41,42 @@ if(!class_exists("WC_Redsys_Refund")) {
 include_once REDSYSPUR_PATH.'/ApiRedsysREST/initRedsysApi.php';
 
 class WC_Redsys_Insite extends WC_Payment_Gateway {
+    // Propiedades de configuración
+    public $entorno;
+    public $nombre;
+    public $fuc;
+    public $tipopago;
+    public $clave256;
+    public $terminal;
+    public $activar_log;
+    public $estado;
+    public $genPedido;
+    public $with3ds;
+    public $idioma_tpv;
+    public $withref;
+    public $tabla_ordenes;
+    public $moneda_manual;
+    public $decimales_moneda;
+    public $button_text;
+    public $button_style;
+    public $body_style;
+    public $form_style;
+    public $form_text_style;
+    public $sustituir_idioma;
+    public $urlOK;
+    public $urlKO;
 
+    // Propiedades de operativa
+    public $moneda;
+    public $version;
+    public $process_url;
+    public $secure_redir_url;
+    public $secure_redir_v2_url;
+    public $secure_back_url;
+    public $secure_back_v2_url;
+    public $payment_fields_url;
+    public $buttonLabel;
+    
     public function __construct() {
         $this->id                 = 'redsys_insite';
         //$this->icon               = REDSYSPUR_URL . '/pages/assets/images/Redsys.png';

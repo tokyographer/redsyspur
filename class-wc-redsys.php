@@ -59,7 +59,10 @@ if ( ! defined( 'REDSYSPUR_PLUGIN_BASENAME' ) )
 
 
 function init_redsys() {
-    load_plugin_textdomain( "redsys", false, dirname( plugin_basename( __FILE__ ) ));
+    // Aseguramos que la carga del dominio de traducción se realice después de 'init'
+    add_action('init', function() {
+        load_plugin_textdomain("redsys", false, dirname(plugin_basename(__FILE__)));
+    }, 11); // Prioridad 11 para asegurar que se ejecuta después de la carga inicial de WooCommerce
 }
 
 function load_redsys() {
@@ -150,4 +153,12 @@ function redsyspur_deactivate_plugins() {
     }
 
 	deactivate_plugins( $plugins, true );
+}
+
+// Ensure proper error handling in production
+if (!defined('WP_DEBUG') || !WP_DEBUG) {
+    error_reporting(E_ALL);
+    ini_set('display_errors', 0);
+    ini_set('log_errors', 1);
+    ini_set('error_log', dirname(__FILE__) . '/logs/redsysLog.log');
 }

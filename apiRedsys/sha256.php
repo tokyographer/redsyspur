@@ -289,8 +289,6 @@ function hashBin(&$hashData){
 		$str .= pack('N', current($hashData->hash));
 	}
 	while(next($hashData->hash));
-
 	return $str;
 	}
 }
-?>
