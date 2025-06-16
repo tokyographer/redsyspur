@@ -34,6 +34,18 @@ Este repositorio contiene correcciones de compatibilidad para el plugin oficial 
    - Control de visualización de errores en producción
    - Mejor depuración y diagnóstico
 
+### Solución de Problemas Comunes
+
+#### Error: Translation loading triggered too early
+
+Si ves este error:
+```
+Notice: Function _load_textdomain_just_in_time was called incorrectly. 
+Translation loading for the woocommerce domain was triggered too early.
+```
+
+Este error ha sido corregido en la versión 1.7.2 moviendo la carga de traducciones al hook `after_setup_theme` con prioridad 20. No se requiere ninguna acción adicional por parte del usuario.
+
 ## 📋 Requisitos
 
 - PHP 8.2 o superior

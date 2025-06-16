@@ -59,10 +59,7 @@ if ( ! defined( 'REDSYSPUR_PLUGIN_BASENAME' ) )
 
 
 function init_redsys() {
-    // Aseguramos que la carga del dominio de traducción se realice después de 'init'
-    add_action('init', function() {
-        load_plugin_textdomain("redsys", false, dirname(plugin_basename(__FILE__)));
-    }, 11); // Prioridad 11 para asegurar que se ejecuta después de la carga inicial de WooCommerce
+    // No hacemos nada aquí, moveremos la carga de traducciones a otro hook
 }
 
 function load_redsys() {
@@ -162,3 +159,11 @@ if (!defined('WP_DEBUG') || !WP_DEBUG) {
     ini_set('log_errors', 1);
     ini_set('error_log', dirname(__FILE__) . '/logs/redsysLog.log');
 }
+
+/**
+ * Cargar traducciones después de que WooCommerce esté completamente inicializado
+ */
+function redsys_load_textdomain() {
+    load_plugin_textdomain("redsys", false, dirname(plugin_basename(__FILE__)) . '/languages');
+}
+add_action('after_setup_theme', 'redsys_load_textdomain', 20);
