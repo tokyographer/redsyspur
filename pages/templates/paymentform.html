@@ -1,0 +1,217 @@
+<link rel="stylesheet" type="text/css" href="{staticPath}/css/estilos.css" />
+
+<div class="col-md-8" id="div_radio_reference" style="display: none;">
+	<input type="radio" name="payment_type" value="reference"> <p style="display: inline;">{referenceTitle}</p> {cardBrandLogo} 
+</div>
+<div class="col-md-8" id="div_reference" style="display: none;">
+	<button onclick="processPayment(true); return false;"style="font-size: 18px;padding: 9px 20px;border: none;box-shadow: 0px 2px 7px #CCC;margin: 0 auto;width: 220px;text-align: center;border-radius: 8px;height: 39px;padding-top: 9px;padding-bottom: 9px;color: white; {btnStyle};">{btnText}</button>
+</div>
+
+<div class="col-md-8" id="div_radio_usual" style="display: none;">
+	<input type="radio" name="payment_type" value="usual" checked> <p style="display: inline;">Usar otra tarjeta</p><br>
+</div>
+<div class="col-md-8" id="div_usual">
+	<div id="insite-form-container" class="form-container">
+	</div>
+	<div id="div_save_reference" style="width: auto; max-width: 350px; margin: 0 auto; display: none;">
+		<input type="checkbox" id="save_reference" name="save_reference"/>
+		<label for="save_reference">Guardar tarjeta para futuras compras</label>
+	</div>	
+</div>
+
+<input type="hidden" id="token"></input>
+<input type="hidden" id="errorCode"></input>
+<input type="hidden" id="redsysOrder" name="redsysOrder" value="{idCart}"></input>
+
+<script>
+	$ = jQuery;
+	allowReference = {allowReference};
+	hasReference = {hasReference};
+
+	<!-- Petición de carga de iframes con estilos para el input-->
+	getInSiteForm(
+		'insite-form-container',
+		'{btnStyle}',
+		'{body_style}',
+		'{form_style}',
+		'{form_text_style}',
+		'{btnText}',
+		'{merchantCode}',
+		'{merchantTerminal}',
+		'{idCart}',
+		'{idioma_tpv}',
+		true, 
+		true, 
+		'inline'
+	);
+
+	function processPayment(useRerefence, operId = ''){
+		var dataToSend={
+			"idCart": "{idCart}",
+			"orderId": '{orderId}',
+			"orderTotal": '{orderTotal}',
+			"billingFirstName": '{billingFirstName}',
+			"billingLastName": '{billingLastName}',
+			"email": '{email}',
+			"valores3DS": cargaValoresBrowser3DS(),
+			"operId": operId,
+			"useReference": useRerefence,
+			"saveReference": allowReference ? document.getElementById("save_reference").checked : false,
+		};
+		
+		$.ajax({
+			url: "{procUrl}",
+			type: "POST",
+			data: dataToSend,
+			dataType: 'json',
+			success: function (data) {
+				placeOrder();
+			},
+			error: function (request, status, error){
+				placeOrder();
+			}
+		});
+	};
+
+	function cargaValoresBrowser3DS() {
+
+		var valores3DS = new Object();
+
+		//browserJavaEnabled
+		valores3DS.browserJavaEnabled = navigator.javaEnabled();
+
+		//browserJavascriptEnabled
+		valores3DS.browserJavascriptEnabled = true;
+
+		//browserLanguage
+		var userLang = navigator.language || navigator.userLanguage;
+		valores3DS.browserLanguage = userLang;
+
+		//browserColorDepth
+		valores3DS.browserColorDepth = screen.colorDepth;
+
+		//browserScreenHeight
+		//browserScreenWidth
+		var myWidth = 0,
+			myHeight = 0;
+		if (typeof window.innerWidth == "number") {
+			//Non-IE
+			myWidth = window.innerWidth;
+			myHeight = window.innerHeight;
+		} else if (
+			document.documentElement &&
+			(document.documentElement.clientWidth ||
+			document.documentElement.clientHeight)
+		) {
+			//IE 6+ in 'standards compliant mode'
+			myWidth = document.documentElement.clientWidth;
+			myHeight = document.documentElement.clientHeight;
+		} else if (
+			document.body &&
+			(document.body.clientWidth || document.body.clientHeight)
+		) {
+			//IE 4 compatible
+			myWidth = document.body.clientWidth;
+			myHeight = document.body.clientHeight;
+		}
+		valores3DS.browserScreenHeight = myHeight;
+		valores3DS.browserScreenWidth = myWidth;
+
+		//browserTZ
+		var d = new Date();
+		valores3DS.browserTZ = d.getTimezoneOffset();
+
+		//browserUserAgent
+		valores3DS.browserUserAgent = navigator.userAgent;
+
+		var valores3DSstring = JSON.stringify(valores3DS);
+
+		return valores3DSstring;
+	}
+
+	function idOperOK() {
+		processPayment(false, event.data.idOper);
+	}
+
+	function idOperKO() {
+		placeOrder();
+	}
+	
+	function merchantValidation() {
+		//Insertar validaciones si fuera necesario.
+		return true;
+	}
+
+	function getPlaceOrderButton(){
+		if($("#place_order").length){
+			return $("#place_order");
+		}else{
+			return $('.wc-block-components-checkout-place-order-button');
+		}
+	}
+
+	function placeOrder(){
+		getPlaceOrderButton().click();
+	}
+
+	function updatePaymentMethod(){
+        var payment_method = $( 'form.checkout input[name=payment_method]:checked' ).val();
+		if(!payment_method){
+			payment_method = $( 'input[name=radio-control-wc-payment-method-options]:checked' ).val();
+		}
+        if ( payment_method == 'redsys_insite') {
+            getPlaceOrderButton().hide();
+        }else{
+			getPlaceOrderButton().show();
+		}
+	}
+
+	if (typeof receiveMessageListener !== "undefined"){
+		window.removeEventListener("message", receiveMessageListener);
+	}
+	
+	receiveMessageListener = function(event){
+		if(event.origin.includes("redsys.es")){
+			storeIdOper(event, "token", "errorCode", merchantValidation);
+			if (document.getElementById("token").value != "") {
+				idOperOK();
+			}
+		}
+	}
+	window.addEventListener("message", receiveMessageListener);
+
+	if(allowReference){
+		$("#div_save_reference").show();
+
+		if(hasReference){
+			$('input[name=payment_type]').show();
+
+			$("#div_radio_reference").show();
+			$("#div_radio_usual").show();
+
+			$('input[name=payment_type]').change(function(){
+				selected_value = $('input[name=payment_type]:checked').val();
+				if(selected_value == "reference"){
+					$("#div_reference").show();
+					$("#div_usual").hide();
+				}else{
+					$("#div_reference").hide();
+					$("#div_usual").show();
+				}
+			});
+		}
+	}
+
+	$('form.checkout').on('change', 'input[name="payment_method"]', function(){
+		updatePaymentMethod();
+	});
+	$('input[name="radio-control-wc-payment-method-options"]').change(function(){
+		updatePaymentMethod();
+	});
+	updatePaymentMethod();
+    setTimeout(() => {
+        updatePaymentMethod();
+    }, 1000);
+
+	$("#redsys-hosted-pay-button").css("min-height","300px");
+</script>

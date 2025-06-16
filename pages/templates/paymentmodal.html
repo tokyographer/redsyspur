@@ -1,0 +1,91 @@
+<input type="button" value="Abrir formulario de pago" id="openModal" class="button alt wp-element-button">
+<script>
+    $ = jQuery;
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src = "{url_modal}";
+    document.getElementsByTagName("head")[0].appendChild(script);
+
+    function openModal(){
+        var requestParams = {
+            FormData: {
+                Ds_SignatureVersion: "{Ds_SignatureVersion}",
+                Ds_MerchantParameters: "{Ds_MerchantParameters}",
+                Ds_Signature: "{Ds_Signature}"
+            },
+            Environment : "{environment_modal}"
+        };
+        initPayment(requestParams);
+
+        //Al presionar el boton Abandonar, se refresca la pagina
+        jQuery('.popup_btn_leave').live('click', function(e){
+            location.reload();
+            return;
+        });
+    }
+
+    function onPlaceOrder(){
+        var payment_method = jQuery( 'form.checkout input[name=payment_method]:checked' ).val();
+		if(!payment_method){
+			payment_method = jQuery( 'input[name=radio-control-wc-payment-method-options]:checked' ).val();
+		}
+        if ( payment_method == 'redsys') {
+            openModal();
+            checkout_place_order_success = true;
+            return false;
+        }        
+        return true;
+    }
+
+    window.addEventListener("message", function(event) {
+        parsePaymentResponse(event);
+    });
+
+    var checkout_place_order_success = false;
+    jQuery( 'form.checkout' ).on( 'checkout_place_order_success', onPlaceOrder);
+    jQuery('.wc-block-components-checkout-place-order-button').click(onPlaceOrder);
+
+    jQuery('#openModal').click(onPlaceOrder);
+
+    document.body.checkout_error = function(e){
+        var payment_method = jQuery( 'form.checkout input[name=payment_method]:checked' ).val();
+		if(!payment_method){
+			payment_method = jQuery( 'input[name=radio-control-wc-payment-method-options]:checked' ).val();
+		}
+        if ( payment_method == 'redsys' && checkout_place_order_success) {
+            jQuery( '.woocommerce-error' ).remove();
+        }
+        return true;
+    }
+
+	function getPlaceOrderButton(){
+		if($("#place_order").length){
+			return $("#place_order");
+		}else{
+			return $('.wc-block-components-checkout-place-order-button');
+		}
+	}
+
+	function updatePaymentMethod(){
+        var payment_method = jQuery( 'form.checkout input[name=payment_method]:checked' ).val();
+		if(!payment_method){
+			payment_method = jQuery( 'input[name=radio-control-wc-payment-method-options]:checked' ).val();
+		}
+        if ( payment_method == 'redsys') {
+            getPlaceOrderButton().hide();
+        }else{
+			getPlaceOrderButton().show();
+		}
+	}
+
+	$('form.checkout').on('change', 'input[name="payment_method"]', function(){
+		updatePaymentMethod();
+	});
+	$('input[name="radio-control-wc-payment-method-options"]').change(function(){
+		updatePaymentMethod();
+	});
+	updatePaymentMethod();
+    setTimeout(() => {
+        updatePaymentMethod();
+    }, 1000);
+</script>

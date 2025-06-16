@@ -1,0 +1,73 @@
+<div style="margin: 1.5em 1.5em 0 0">
+	<h1>Diagnóstico Redsys</h1>
+	<p>Información sobre el funcionamiento de la Pasarela Unificada de Redsys para Woocommerce. Esta información es de
+		gran utilidad a la hora de enviar un ticket de petición de soporte a tu entidad bancaria o a Redsys y se
+		recomienda su inclusión dentro de la información de la incidencia.</p>
+	<table class="widefat striped fixed" cellspacing="0" id="status">
+		<thead>
+			<tr>
+				<th colspan="3">
+					<h2>Estado de la conexión con Redsys</h2>
+				</th>
+			</tr>
+			<tr>
+				<th colspan="3">Estado de la conexión Host-to-Host con Redsys. Esta conexión es necesaria para toda la
+					mensajería vía REST, usada en la integración inSite así como en la gestión de devoluciones,
+					anulaciones y confirmaciones desde el Backoffice.</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td>Conexión Redsys:</td>
+				<td></td>
+				<td style="color: {$connectionRedsysColor};">
+					<span class="dashicons dashicons-{$connectionRedsysMark}"></span> {$connectionRedsys}
+				</td>
+			</tr>
+		</tbody>
+	</table>
+	<p>Si la conexión con Redsys falla, es posible que tu servidor no disponga de los certificados necesarios para poder
+		conectar con nuestros servidores. Accede a <a href="https://sis-d.redsys.es/sis/CAs/comunicadoCertificado.html"
+			target="_blank">esta página de documentación</a> para obtener más información.</p>
+	<br>
+	<table class="widefat striped fixed" cellspacing="0" id="status">
+		<thead>
+			<tr>
+				<th colspan="3">
+					<h2>Información de la instalación</h2>
+				</th>
+			</tr>
+			<tr>
+				<th colspan="3">Información sobre las versiones de PHP y Woocommerce que utiliza tu servidor, así como
+					otros datos útiles para la resolución de incidencias.</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td>Version del servidor:</td>
+				<td></td>
+				<td>{$serverVersion}</td>
+			</tr>
+			<tr>
+				<td>Version PHP:</td>
+				<td></td>
+				<td>{$phpVersion}</td>
+			</tr>
+			<tr>
+				<td>Version del módulo Redsys:</td>
+				<td></td>
+				<td>{$redsysVersion}</td>
+			</tr>
+			<tr>
+				<td>Version Wordpress</td>
+				<td></td>
+				<td>{$wordpressVersion}</td>
+			</tr>
+			<tr>
+				<td>Version WooCommerce</td>
+				<td></td>
+				<td>{$woocommerceVersion}</td>
+			</tr>
+		</tbody>
+	</table>
+</div>

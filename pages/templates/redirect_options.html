@@ -1,0 +1,89 @@
+<form id="redsys_payment_form" name="redsys_payment_form">
+    <div>
+        <div>{description}</div>
+    </div>
+    <div id="div-options" class="wc-block-components-radio-control" style='margin-top:1%;'>
+        <label for="ref" class="wc-block-components-radio-control__option">
+            <input type="radio" class="wc-block-components-radio-control__input" id="ref" name="redsys_payment"
+                onchange="onChangeWithRef()" />
+            <div class="wc-block-components-radio-control__option-layout">
+                <div class="wc-block-components-radio-control__label-group">
+                    <span class="wc-block-components-checkbox__label">Usar la tarjeta guardada</span>
+                </div>
+                <div class="wc-block-components-radio-control__description-group">
+                    <span class="wc-block-components-radio-control__description">{brand} que termina en <b>{maskedCard}</b></span>
+                </div>
+
+            </div>
+        </label>
+        <label for="new" class="wc-block-components-radio-control__option">
+            <input type="radio" class="wc-block-components-radio-control__input" id="new" name="redsys_payment"
+                onchange="onChangeWithRef()" />
+            <div class="wc-block-components-radio-control__option-layout">
+                <div class="wc-block-components-radio-control__label-group">
+                    <span class="wc-block-components-checkbox__label">Registrar una nueva tarjeta</span>
+                </div>
+                <div class="wc-block-components-radio-control__description-group">
+                    <span class="wc-block-components-radio-control__description">Al guardar tu tarjeta, esta se almacenará en formato
+                        token en el servidor del comercio de manera 100% segura. Tu antigua tarjeta se sustituirá por la nueva.</span>
+                </div>
+            </div>
+        </label>
+    </div>
+    <div id="div-noref">
+        <div class="wc-block-components-checkbox">
+            <label for="check_guardar">
+                <input type="checkbox" class="wc-block-components-checkbox__input" id="check_guardar"
+                    name="check_guardar" onchange="onChangeSaveRef()" />
+                <svg class="wc-block-components-checkbox__mark" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 20">
+                    <path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"></path>
+                </svg>
+                <span class="wc-block-components-checkbox__label">Guardar la tarjeta para pagar más rápido la próxima
+                    vez</span>
+            </label>
+            <div style="margin-top: 2%;">
+                <span style='font-style:italic; font-size: 0.75em'>Al guardar tu tarjeta, esta se almacenará en formato
+                    token en el servidor del comercio de manera 100% segura.</span>
+            </div>
+        </div>
+    </div>
+</form>
+
+<script type="text/javascript">
+    maskedCard = "{maskedCard}";
+    withRef = false;
+    saveRef = false;
+
+    onChangeParameters();
+
+    if (!maskedCard) {
+        document.getElementById('div-options').remove();
+    } else {
+        document.getElementById('div-noref').remove();
+    }
+
+    function onChangeWithRef() {
+        withRef = jQuery('#ref').prop('checked');
+        saveRef = jQuery('#new').prop('checked');
+        onChangeParameters();
+    }
+
+    function onChangeSaveRef() {
+        saveRef = document.redsys_payment_form.check_guardar.checked;
+        onChangeParameters();
+    }
+
+    function onChangeParameters() {
+        var data = {
+            withRef: withRef,
+            saveRef: saveRef
+        };
+
+        jQuery.ajax({
+            type: "POST",
+            url: "{redirectOptionsUrl}",
+            data: data,
+        });
+    }
+</script>

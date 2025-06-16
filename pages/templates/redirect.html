@@ -1,0 +1,14 @@
+<form action="{env}" method="post" id="redsys_payment_form" name="redsys_payment_form">
+    <input type="hidden" name="Ds_SignatureVersion" value="{Ds_SignatureVersion}" />
+    <input type="hidden" name="Ds_MerchantParameters" value="{Ds_MerchantParameters}" />
+    <input type="hidden" name="Ds_Signature" value="{Ds_Signature}" />
+</form>
+
+<script type="text/javascript">
+
+    function sendForm(){
+        document.getElementById("redsys_payment_form").submit();
+    }
+
+    sendForm();
+</script>
